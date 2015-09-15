@@ -107,6 +107,7 @@ public class FTPOperations {
 		
 				
 				String finaltarget,temptarget;
+				
 				finaltarget = fInfo.Basedir + File.separator + source.substring(fInfo.Destdir.length());
 				source = source.split("[|]")[0];
 				temptarget = finaltarget.replace('/', ' ');
@@ -128,34 +129,49 @@ public class FTPOperations {
 					finaltarget+=arr[i]+((i==arr.length-1)?"":"/");
 				}
 				
+				File tempf = new File(finaltarget);
+				if(tempf.exists()){
+					if(tempf.isFile()){
+						String filename = finaltarget.split("/")[finaltarget.split("/").length-1];
+						if(filename.compareTo(tempf.getName())!=0){
+							writeln("File "+tempf.getName()+" already exists");
+							return;
+						}					
+					}
+					else{
+						writeln("Directory "+finaltarget+" already exists");
+						return;
+					}
+					
+				}
 				if(isDir)
 					writeln("Going to download directory: " + finaltarget + " from source " + source);
 				
 					
 				FileBeingModified = finaltarget;
 				try {
-				FileOutputStream fo;
-				if(isDir){
-					writer.write(("Creating directory "+finaltarget+"\n").getBytes());
-					boolean created = new File(finaltarget).mkdir();
-					if(created){
-						writeln("Directory created!!");
-					}
-					else{
-						writeln("Directory failed to create");
-					}
-					return;
-				}
-				File f = new File(finaltarget);
-					fo = new FileOutputStream(f);
-					writeln("Going to download file: " + finaltarget + " from source " + source);
-					boolean isReceived = ftc.retrieveFile(source, fo);
-					if(isReceived)
-						writeln("Successfully downloaded the file "+source+"...");
-					else
-						writeln("Failed to download the file "+source);
+					FileOutputStream fo;
 					worker.setProg(source);
-					fo.close();
+					if(isDir){
+						writer.write(("Creating directory "+finaltarget+"\n").getBytes());
+						boolean created = new File(finaltarget).mkdirs();
+						if(created){
+							writeln("Directory created!!");
+						}
+						else{
+							writeln("Directory failed to create");
+						}
+						return;
+					}
+					File f = new File(finaltarget);
+						fo = new FileOutputStream(f);
+						writeln("Going to download file: " + finaltarget + " from source " + source);
+						boolean isReceived = ftc.retrieveFile(source, fo);
+						if(isReceived)
+							writeln("Successfully downloaded the file "+source+"...");
+						else
+							writeln("Failed to download the file "+source);
+						fo.close();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

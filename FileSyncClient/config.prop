@@ -1,7 +1,7 @@
 #Auto generated properties file
-#Tue Sep 15 02:57:03 IST 2015
+#Tue Sep 15 17:52:55 IST 2015
 USER=prishriv
 DESTINATION=slc03gcl.us.oracle.com
-BASEDIR=C\:\\Users\\prishriv.ORADEV\\dcs-server
-DESTDIR=/scratch/prishriv/view_storage/prishriv_racview2/racdbaas/src/opc/dcs/dcs-server/
+BASEDIR=C\:\\Users\\prishriv.ORADEV\\DCS-new
+DESTDIR=/scratch/prishriv/view_storage/prishriv_racview/racdbaas/src/opc/dcs/dcs-server
 PASSWORD=MjEzbmlzQUND

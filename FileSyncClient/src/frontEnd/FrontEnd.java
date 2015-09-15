@@ -1,5 +1,6 @@
 package frontEnd;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -287,13 +288,13 @@ public class FrontEnd {
 					consoleWriterThread = new Thread(new ConsoleWriter(textArea, pread));
 					consoleWriterThread.start();
 					
-					sconn = new SshConnection(fInfo.Destination, fInfo.User, fInfo.Password, pwrite);
-					
+//					sconn = new SshConnection(fInfo.Destination, fInfo.User, fInfo.Password, pwrite);
+//					
 					FileSyncClient dsc = new FileSyncClient(fInfo.Destination, 60000);
 					dsc.findDifference(fInfo.Destdir, new FileDirStatus(fInfo.Basedir));
 					System.out.println(dsc.getUpdateList());
-					FTPOperations fOp = new FTPOperations(pwrite, sconn, fInfo);
-					
+					FTPOperations fOp = new FTPOperations(pwrite, null , fInfo);
+					jPb.setForeground(Color.LIGHT_GRAY);
 					jPb.setVisible(true);
 					jPb.setStringPainted(true);
 					System.out.println("update list: "+dsc.getUpdateList()+" and delete list: "+dsc.getDeleteList());
@@ -326,7 +327,8 @@ public class FrontEnd {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cw.cancel(true);
-
+				jPb.setString("Cloning stopped..");
+				jPb.setValue(100);
 				try {
 					pwrite.write("Done cloning..".getBytes());
 				} catch (IOException e2) {
